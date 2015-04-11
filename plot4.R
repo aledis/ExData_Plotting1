@@ -1,0 +1,15 @@
+data<-read.csv("household_power_consumption.txt", sep = ";", na.strings="?")
+data<-subset(data, Date %in% c("1/2/2007" ,"2/2/2007"))
+data$ts<-strptime(paste(data$Date, data$Time),"%d/%m/%Y %H:%M:%S")
+
+par(mfrow=c(2,2))
+with(data, plot(ts,Global_active_power,type = "line", xlab="", ylab="Global Active Power (kilowatts)"))
+with(data, plot(ts,Voltage,type = "line", xlab="datetime", ylab="Voltage"))
+with(data, plot(ts,Sub_metering_1, type = "line", xlab="", ylab="Energy sub metering"))
+with(data, lines(ts,Sub_metering_2,type = "line", col="red"))
+with(data, lines(ts,Sub_metering_3,type = "line", col="blue"))
+legend("topright", lty=1, adj=0, cex=0.4, legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), bty="n", col=c("black", "red","blue"))
+with(data, plot(ts,Global_reactive_power,type = "line", xlab="datetime", yaxp=c(0,0.5,5)))
+
+dev.copy(png,"plot4.png", width=480, height=480)
+dev.off()
